@@ -5,13 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Screening"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="550" Width="800">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" Name="Menu"></RowDefinition>
-            <RowDefinition Height="50" Name="Settings"></RowDefinition>
-            <RowDefinition Height="100" Name="Settings2"></RowDefinition>
+            <RowDefinition Height="100" Name="Settings"></RowDefinition>
             <RowDefinition Height="*" Name="ProcessingImageRow"></RowDefinition>
         </Grid.RowDefinitions>
         <DockPanel>
@@ -27,16 +26,33 @@
                 </MenuItem>
             </Menu>
         </DockPanel>
-        <Label HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Row="1">Text for Screening:</Label>
-        <TextBox x:Name="Text" Margin="117,8,483,12" Width="200" Height="30" Grid.Row="1"/>
-        <Grid Grid.Row="2">
-            <Slider Name="MatrixSizeSlider" IsSnapToTickEnabled="True" Minimum="1" Maximum="100"
-                    TickFrequency="1"  HorizontalAlignment="Left" Margin="404,-36,0,0" VerticalAlignment="Top" Width="120" ValueChanged="MatrixSizeSlider_OnValueChanged"/>
-            <Slider Name="FontSizeSlider"  HorizontalAlignment="Left" Margin="614,-36,0,0" VerticalAlignment="Top" Width="120"/>
-            <Label Name="MatrixSizeLabel" Content="Matrix Size" HorizontalAlignment="Left" Margin="336,-40,0,0" VerticalAlignment="Top"/>
-            <Label Name="SizeLabel" Content="Size" HorizontalAlignment="Left" Margin="578,-40,0,0" VerticalAlignment="Top"/>
-            <Label Name="CurrentMatrixSize" HorizontalAlignment="Left" Margin="524,-40,0,0" VerticalAlignment="Top"/>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <Label HorizontalAlignment="Left" VerticalAlignment="Center">Text for Screening:</Label>
+                <TextBox x:Name="Text" Width="250" Height="55" HorizontalAlignment="Left" Margin="5"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Label Name="MatrixSizeLabel" Content="Matrix Size" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Slider Name="MatrixSizeSlider" IsSnapToTickEnabled="True" Minimum="1" Maximum="100"
+                        TickFrequency="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200"
+                        ValueChanged="MatrixSizeSlider_OnValueChanged"/>
+                <Label Name="CurrentMatrixSize" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Width="40" Margin="-350,-70,0,0"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Label Name="SizeLabel" Content="Font Size" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                <Slider Name="FontSizeSlider" IsSnapToTickEnabled="True" Minimum="10" Maximum="100"
+                        TickFrequency="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200"
+                        ValueChanged="FontSizeSlider_OnValueChanged"/>
+                <Label Name="SizeValueLabel" HorizontalAlignment="Center" VerticalAlignment="Center"  Width="40" FontSize="16" Margin="-350,-70,0,0"/>
+            </StackPanel>
+          
         </Grid>
-        <Image Name="ProcessedImage"  Grid.Row="3" Height="300" Margin="20" HorizontalAlignment="Left" Width="600"/>
+        <Image Name="ProcessedImage"  Grid.Row="2" Height="Auto" Margin="20" HorizontalAlignment="Left" Width="Auto"/>
     </Grid>
 </Window>

@@ -20,12 +20,12 @@ namespace Screening
 
         private void screeningToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ProcessedImage.Source = _screening.Screening(Text.Text, MatrixSizeSlider.Value.ToString(CultureInfo.InvariantCulture));
+            ProcessedImage.Source = _screening.Screening(Text.Text, MatrixSizeSlider.Value.ToString(CultureInfo.InvariantCulture), FontSizeSlider.Value.ToString(CultureInfo.InvariantCulture));
         }
 
         private void loadImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            var openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() != true) return;
             var (size, source) = _screening.LoadImage(openFileDialog.FileName);
             ProcessedImage.RenderSize = size;
@@ -47,6 +47,12 @@ namespace Screening
         {
             CurrentMatrixSize ??= new Label();
             CurrentMatrixSize.Content = e.NewValue;
+        }
+
+        private void FontSizeSlider_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            SizeValueLabel ??= new Label();
+            SizeValueLabel.Content = e.NewValue;
         }
     }
 }

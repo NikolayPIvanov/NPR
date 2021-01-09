@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Screening", "Screening\Scre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForms", "WinForms\WinForms.csproj", "{9142E72A-BCF7-450B-A335-4EAD6502A8A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartoonStyle", "CartoonStyle\CartoonStyle.csproj", "{2A0FBB42-3D7D-4172-8772-7747287E663A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9142E72A-BCF7-450B-A335-4EAD6502A8A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9142E72A-BCF7-450B-A335-4EAD6502A8A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9142E72A-BCF7-450B-A335-4EAD6502A8A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A0FBB42-3D7D-4172-8772-7747287E663A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A0FBB42-3D7D-4172-8772-7747287E663A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A0FBB42-3D7D-4172-8772-7747287E663A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A0FBB42-3D7D-4172-8772-7747287E663A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

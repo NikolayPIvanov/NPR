@@ -2,15 +2,14 @@
 using System.Drawing;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Brush = System.Windows.Media.Brush;
 using Size = System.Windows.Size;
 
 namespace Screening
 {
-    public class ScreeningAlgorithm : IDisposable
+    public class ScreeningAlgorithm : Algorithm, IDisposable
     {
-        private Bitmap _originalBitmap;
-        private Bitmap _outputBitmap;
-        private int _width, _height, _matrixSize;
+        private int _matrixSize, _fontSize;
         private string _text;
         private char[] _characters;
         private Graphics _graphics;
@@ -23,58 +22,56 @@ namespace Screening
             _characters = new char[1];
             _characters[0] = 'v';
         }
-
-        public BitmapSource OriginalBitmap => BitmapConverter.LoadBitmap(_originalBitmap);
-        public BitmapSource OutputBitmapSource => BitmapConverter.LoadBitmap(_outputBitmap);
         
-        public (Size, BitmapSource) LoadImage(string filename)
+        public override (Size, BitmapSource) LoadImage(string filename)
         {
-            _originalBitmap = new Bitmap(Image.FromFile(filename));
-            _width = _originalBitmap.Width / _matrixSize * _matrixSize;
-            _height = _originalBitmap.Height / _matrixSize * _matrixSize;
+            originalBitmap = new Bitmap(Image.FromFile(filename));
+            width = originalBitmap.Width / _matrixSize * _matrixSize;
+            height = originalBitmap.Height / _matrixSize * _matrixSize;
 
-            return (new System.Windows.Size(_width, _height), BitmapConverter.LoadBitmap(_originalBitmap));
+            return (new System.Windows.Size(width, height), BitmapConverter.LoadBitmap(originalBitmap));
         }
-
-        public BitmapSource Screening(string textBox, string size)
+        
+        public BitmapSource Screening(string textBox, string size, string fontSize)
         {
             GetText(textBox);
             GetSize(size);
+            GetFontSize(fontSize);
+
             if (_characters == null) return null;
 
-            _outputBitmap = new Bitmap(_width, _height);
-            _graphics = Graphics.FromImage(_outputBitmap);
+            originalBitmap = new Bitmap(width, height);
+            _graphics = Graphics.FromImage(originalBitmap);
 
-            for (var j = 0; j < _height; j += _matrixSize)
+            for (var rowIndex = 0; rowIndex < height; rowIndex += _matrixSize)
             {
                 var n = 0;
-                for (var i = 0; i < _width; i += _matrixSize)
+                for (var columnIndex = 0; columnIndex < width; columnIndex += _matrixSize)
                 {
-                    int c = _originalBitmap.GetPixel(i, j).R;
-                    if (c >= 0 && c < 63)
+                    var pixel = originalBitmap.GetPixel(columnIndex, rowIndex);
+                    if (pixel.R >= 0 && pixel.R < 63)
                     {
-                        _graphics.DrawString(_characters[n].ToString(), _font, Brushes.Black, i, j);
-                        n = Counter(n);
+                        n = Draw(n, columnIndex, rowIndex, pixel, _fontSize);
                     }
-                    else if (c >= 63 && c < 127)
+                    else if (pixel.R >= 63 && pixel.R < 127)
                     {
-                        n = Draw(n, i, j, 16);
+                        n = Draw(n, columnIndex, rowIndex, pixel, _fontSize - 4);
                     }
-                    else if (c >= 127 && c < 191)
+                    else if (pixel.R >= 127 && pixel.R < 191)
                     {
-                        n = Draw(n, i, j, 12);
+                        n = Draw(n, columnIndex, rowIndex, pixel, _fontSize - 8);
                     }
                     else
                     {
-                        n = Draw(n, i, j, 8);
+                        n = Draw(n, columnIndex, rowIndex, pixel, _fontSize - 12);
                     }
                 }
             }
 
-            return BitmapConverter.LoadBitmap(_outputBitmap);
+            return BitmapConverter.LoadBitmap(outputBitmap);
         }
 
-        private int Draw(int n, int i, int j, float fontSize)
+        private int Draw(int n, int i, int j, Color pixel, float fontSize)
         {
             using var f = new Font("Arial", fontSize, System.Drawing.FontStyle.Regular,
                 GraphicsUnit.Pixel);
@@ -92,6 +89,19 @@ namespace Screening
             {
                 MessageBox.Show(e.Message);
                 _matrixSize = 10;
+            }
+        }
+
+        private void GetFontSize(string value)
+        {
+            try
+            {
+                _fontSize = int.Parse(value);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                _fontSize = 20;
             }
         }
         private void GetText(string value)
@@ -123,8 +133,8 @@ namespace Screening
 
         public void Dispose()
         {
-            _originalBitmap?.Dispose();
-            _outputBitmap?.Dispose();
+            originalBitmap?.Dispose();
+            outputBitmap?.Dispose();
             _graphics?.Dispose();
             _font?.Dispose();
         }
